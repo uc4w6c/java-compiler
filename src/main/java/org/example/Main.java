@@ -27,6 +27,6 @@ public class Main {
     }
 
     Path outPath = path.getParent().resolve(path.getFileName().toString().replace(".java", ".class"));
-
+    CompilationEngine compilationEngine = new CompilationEngine(path, outPath);
   }
 }

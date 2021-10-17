@@ -13,39 +13,64 @@ public class JavaTokenizer {
 
   public JavaTokenizer(Path filePath) {
     try (BufferedReader reader = Files.newBufferedReader(filePath)) {
-      String line = reader.readLine().trim();
       while (true) {
+        String line = reader.readLine().trim();
+
         // 終端判定
         if (line.isEmpty()) {
-
+          break;
         }
-        int readStartPoint = 0;
-        int readCount = 0;
-        String tmpToken;
-        while (readStartPoint + readCount < line.length()) {
-          char readChar = line.charAt(readStartPoint + readCount);
+        int readPoint = 0;
+        StringBuilder tmpToken = new StringBuilder();
+        // MEMO: なんかいまいちだから後で直したい
+        while (readPoint < line.length()) {
+          char readChar = line.charAt(readPoint);
+
           switch (readChar) {
             case ' ':
-              readCount = 0;
+              ifTokenThenAdd(tmpToken.toString());
+              tmpToken = new StringBuilder();
+              break;
             case ';' :
-              readCount = 0;
+              ifTokenThenAdd(tmpToken.toString());
+              tmpToken = new StringBuilder();
+              break;
             case '(' :
-              readCount = 0;
+              ifTokenThenAdd(tmpToken.toString());
+              tmpToken = new StringBuilder();
+              break;
             case ')' :
-              readCount = 0;
+              ifTokenThenAdd(tmpToken.toString());
+              tmpToken = new StringBuilder();
+              break;
             case '{' :
-              readCount = 0;
+              ifTokenThenAdd(tmpToken.toString());
+              tmpToken = new StringBuilder();
+              break;
             case '}' :
-              readCount = 0;
+              ifTokenThenAdd(tmpToken.toString());
+              tmpToken = new StringBuilder();
+              break;
             default:
+              break;
           }
+          tmpToken.append(readChar);
         }
+        ifTokenThenAdd(tmpToken.toString());
       }
-
     } catch (IOException e) {
       throw new IllegalArgumentException(e);
     }
   }
 
+  private void ifTokenThenAdd(String token) {
+    if (!token.isEmpty() && !token.trim().equals("")) {
+      tokens.add(token);
+    }
+  }
+
+  public Boolean hasMoreTokens() {
+    return (pointer < this.tokens.size());
+  }
 
 }
