@@ -21,12 +21,13 @@ public class Main {
           "FileName:" + fileName);
     }
 
-    if (!path.getFileName().startsWith(".java")) {
+    if (!path.getFileName().toString().endsWith(".java")) {
       throw new IllegalArgumentException("javaのファイルを指定してください。\r\n" +
           "FileName:" + fileName);
     }
 
     Path outPath = path.getParent().resolve(path.getFileName().toString().replace(".java", ".class"));
     CompilationEngine compilationEngine = new CompilationEngine(path, outPath);
+    compilationEngine.compile();
   }
 }
