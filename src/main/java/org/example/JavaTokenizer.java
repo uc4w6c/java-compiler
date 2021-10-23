@@ -38,25 +38,18 @@ public class JavaTokenizer {
               tmpToken = new StringBuilder();
               break;
             case ';' :
-              ifTokenThenAdd(tmpToken.toString());
-              tmpToken = new StringBuilder();
-              break;
             case '(' :
-              ifTokenThenAdd(tmpToken.toString());
-              tmpToken = new StringBuilder();
-              break;
             case ')' :
-              ifTokenThenAdd(tmpToken.toString());
-              tmpToken = new StringBuilder();
-              break;
             case '{' :
-              ifTokenThenAdd(tmpToken.toString());
-              tmpToken = new StringBuilder();
-              break;
             case '}' :
+            case '[' :
+            case ']' :
+            case '.' :
               ifTokenThenAdd(tmpToken.toString());
+              ifTokenThenAdd(String.valueOf(readChar));
+              readPoint++;
               tmpToken = new StringBuilder();
-              break;
+              continue;
             default:
               break;
           }
