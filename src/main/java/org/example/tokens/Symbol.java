@@ -63,6 +63,10 @@ public enum Symbol {
     this.code = code;
   }
 
+  public String getCode() {
+    return code;
+  }
+
   public static boolean isSymbol(String code) {
     for (Symbol symbol : Symbol.values()) {
       if (symbol.code.equals(code)) {

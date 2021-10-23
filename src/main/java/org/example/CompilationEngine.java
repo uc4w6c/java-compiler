@@ -2,6 +2,8 @@ package org.example;
 
 import java.nio.file.Path;
 
+import org.example.tokens.KeyWord;
+import org.example.tokens.Symbol;
 import org.example.tokens.TokenType;
 
 public class CompilationEngine {
@@ -18,33 +20,74 @@ public class CompilationEngine {
 
     public void compile() {
       while (this.jackTokenizer.hasMoreTokens()) {
-        TokenType tokenType = this.jackTokenizer.tokenType();
-        if (tokenType == TokenType.KEYWORD) {
-          System.out.print("<keyword>");
-          System.out.print(this.jackTokenizer.keyword());
-          System.out.println("</keyword>");
-        }
-        if (tokenType == TokenType.SYMBOL) {
-          System.out.print("<symbol>");
-          System.out.print(this.jackTokenizer.symbol());
-          System.out.println("</symbol>");
-        }
-        if (tokenType == TokenType.IDENTIFIER) {
-          System.out.print("<identifier>");
-          System.out.print(this.jackTokenizer.identifier());
-          System.out.println("</identifier>");
-        }
-        if (tokenType == TokenType.INT_CONSTANT) {
-          System.out.print("<int_constant>");
-          System.out.print(this.jackTokenizer.intVal());
-          System.out.println("</int_constant>");
-        }
-        if (tokenType == TokenType.STRING_CONSTANT) {
-          System.out.print("<string_constant>");
-          System.out.print(this.jackTokenizer.stringVal());
-          System.out.println("</string_constant>");
-        }
+        this.compileClass();
         this.jackTokenizer.advance();
       }
     }
+
+    /** クラスコンパイル */
+    private void compileClass() {
+      // class
+      System.out.println("<class>");
+
+      if (this.jackTokenizer.tokenType() != TokenType.KEYWORD) {
+        throw new RuntimeException("lack 'class' token");
+      }
+      // public, private, protected
+      if (this.jackTokenizer.keyword().equals(KeyWord.PUBLIC.getCode())) {
+        System.out.println("<keyword>");
+        System.out.println(this.jackTokenizer.keyword());
+        System.out.println("</keyword>");
+      }
+      this.jackTokenizer.advance();
+
+      // class
+      if (!this.jackTokenizer.keyword().equals(KeyWord.CLASS.getCode())) {
+        throw new RuntimeException("lack 'class' token");
+      }
+      System.out.println("<keyword>");
+      System.out.println(this.jackTokenizer.keyword());
+      System.out.println("</keyword>");
+      this.jackTokenizer.advance();
+
+      // className
+      if (this.jackTokenizer.tokenType() != TokenType.IDENTIFIER) {
+        throw new RuntimeException("expect an identifier after 'class'");
+      }
+      System.out.println("<identifier>");
+      System.out.println(this.jackTokenizer.identifier());
+      System.out.println("</identifier>");
+      this.jackTokenizer.advance();
+
+      // '{'
+      if (!(this.jackTokenizer.tokenType() == TokenType.SYMBOL &&
+            this.jackTokenizer.symbol() == Symbol.LBRACE.getCode())) {
+        throw new RuntimeException("expect '{' after className");
+      }
+      System.out.println("<symbol>");
+      System.out.println(this.jackTokenizer.symbol());
+      System.out.println("</symbol>");
+      this.jackTokenizer.advance();
+
+      // methods
+      this.compileMethods();
+
+      // '}'
+      if (!(this.jackTokenizer.tokenType() == TokenType.SYMBOL &&
+          this.jackTokenizer.symbol() == Symbol.RBRACE.getCode())) {
+        throw new RuntimeException("expect '}' after '{'");
+      }
+      System.out.println("<symbol>");
+      System.out.println(this.jackTokenizer.symbol());
+      System.out.println("</symbol>");
+      this.jackTokenizer.advance();
+
+      System.out.println("</class>");
+    }
+
+    /** メソッドコンパイル */
+    private void compileMethods() {
+      // while ()
+    }
+
 }

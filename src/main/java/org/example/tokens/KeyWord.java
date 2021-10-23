@@ -24,6 +24,10 @@ public enum KeyWord {
     this.code = code;
   }
 
+  public String getCode() {
+    return code;
+  }
+
   public static boolean isKeyword(String code) {
     for (KeyWord keyword : KeyWord.values()) {
       if (code.equals(keyword.code)) {
