@@ -61,7 +61,7 @@ public class CompilationEngine {
 
       // '{'
       if (!(this.jackTokenizer.tokenType() == TokenType.SYMBOL &&
-            this.jackTokenizer.symbol() == Symbol.LBRACE.getCode())) {
+            this.jackTokenizer.symbol().equals(Symbol.LBRACE.getCode()))) {
         throw new RuntimeException("expect '{' after className");
       }
       System.out.println("<symbol>");
@@ -74,7 +74,7 @@ public class CompilationEngine {
 
       // '}'
       if (!(this.jackTokenizer.tokenType() == TokenType.SYMBOL &&
-          this.jackTokenizer.symbol() == Symbol.RBRACE.getCode())) {
+          this.jackTokenizer.symbol().equals(Symbol.RBRACE.getCode()))) {
         throw new RuntimeException("expect '}' after '{'");
       }
       System.out.println("<symbol>");
@@ -89,8 +89,8 @@ public class CompilationEngine {
     private void compileMethods() {
       while (true) {
         // classの終了 '}' まで
-        if (!(this.jackTokenizer.tokenType() == TokenType.SYMBOL &&
-            this.jackTokenizer.symbol() == Symbol.RBRACE.getCode())) {
+        if ((this.jackTokenizer.tokenType() == TokenType.SYMBOL &&
+            this.jackTokenizer.symbol().equals(Symbol.RBRACE.getCode()))) {
           break;
         }
 
@@ -115,10 +115,10 @@ public class CompilationEngine {
         // method return value
         // TODO: 一旦プリミティブのみ許可にする
         if (this.jackTokenizer.tokenType() != TokenType.KEYWORD &&
-              (this.jackTokenizer.keyword() != KeyWord.VOID.getCode() ||
-                  this.jackTokenizer.keyword() != KeyWord.INT.getCode() ||
-                  this.jackTokenizer.keyword() != KeyWord.BOOLEAN.getCode() ||
-                  this.jackTokenizer.keyword() != KeyWord.CHAR.getCode())) {
+              (!this.jackTokenizer.keyword().equals(KeyWord.VOID.getCode()) ||
+                  !this.jackTokenizer.keyword().equals(KeyWord.INT.getCode()) ||
+                  !this.jackTokenizer.keyword().equals(KeyWord.BOOLEAN.getCode()) ||
+                  !this.jackTokenizer.keyword().equals(KeyWord.CHAR.getCode()))) {
           throw new RuntimeException("lack 'return value' token");
         }
         System.out.println("<keyword>");
@@ -137,7 +137,7 @@ public class CompilationEngine {
 
         // '{'
         if (!(this.jackTokenizer.tokenType() == TokenType.SYMBOL &&
-            this.jackTokenizer.symbol() == Symbol.LPAREN.getCode())) {
+            this.jackTokenizer.symbol().equals(Symbol.LPAREN.getCode()))) {
           throw new RuntimeException("expect '(' after methodName");
         }
         System.out.println("<symbol>");
@@ -147,25 +147,45 @@ public class CompilationEngine {
 
         // parameter List
         while (true) {
-          if (!(this.jackTokenizer.tokenType() == TokenType.SYMBOL &&
-              this.jackTokenizer.symbol() == Symbol.RPAREN.getCode())) {
+          if ((this.jackTokenizer.tokenType() == TokenType.SYMBOL &&
+              this.jackTokenizer.symbol().equals(Symbol.RPAREN.getCode()))) {
             break;
           }
           // parameter
-          // TODO: 一旦プリミティブのみ許可にする
-          if (this.jackTokenizer.tokenType() != TokenType.KEYWORD &&
-              (this.jackTokenizer.keyword() != KeyWord.VOID.getCode() ||
-                  this.jackTokenizer.keyword() != KeyWord.INT.getCode() ||
-                  this.jackTokenizer.keyword() != KeyWord.BOOLEAN.getCode() ||
-                  this.jackTokenizer.keyword() != KeyWord.CHAR.getCode())) {
-            throw new RuntimeException("lack 'return value' token");
+          if (this.jackTokenizer.tokenType() == TokenType.KEYWORD) {
+            if (!this.jackTokenizer.keyword().equals(KeyWord.VOID.getCode()) ||
+                !this.jackTokenizer.keyword().equals(KeyWord.INT.getCode()) ||
+                !this.jackTokenizer.keyword().equals(KeyWord.BOOLEAN.getCode()) ||
+                !this.jackTokenizer.keyword().equals(KeyWord.CHAR.getCode())) {
+              throw new RuntimeException("lack 'return value' token");
+            }
+            System.out.println("<keyword>");
+            System.out.println(this.jackTokenizer.keyword());
+            System.out.println("</keyword>");
           }
-          System.out.println("<keyword>");
-          System.out.println(this.jackTokenizer.keyword());
-          System.out.println("</keyword>");
+
+          if (this.jackTokenizer.tokenType() == TokenType.IDENTIFIER) {
+            System.out.println("<identifier>");
+            System.out.println(this.jackTokenizer.identifier());
+            System.out.println("</identifier>");
+          }
           this.jackTokenizer.advance();
 
-          // parameterName
+          // array ('[')
+          if (this.jackTokenizer.tokenType() == TokenType.SYMBOL &&
+              this.jackTokenizer.symbol().equals(Symbol.LBRACKET.getCode())) {
+            System.out.println("<symbol>");
+            System.out.println(this.jackTokenizer.symbol());
+            System.out.println("</symbol>");
+            this.jackTokenizer.advance();
+
+            System.out.println("<symbol>");
+            System.out.println(this.jackTokenizer.symbol());
+            System.out.println("</symbol>");
+            this.jackTokenizer.advance();
+          }
+
+            // parameterName
           if (this.jackTokenizer.tokenType() != TokenType.IDENTIFIER) {
             throw new RuntimeException("lack 'parameter name' token");
           }
@@ -192,7 +212,7 @@ public class CompilationEngine {
 
         // '{'
         if (!(this.jackTokenizer.tokenType() == TokenType.SYMBOL &&
-            this.jackTokenizer.symbol() == Symbol.LBRACE.getCode())) {
+            this.jackTokenizer.symbol().equals(Symbol.LBRACE.getCode()))) {
           throw new RuntimeException("expect '{' after method");
         }
         System.out.println("<symbol>");
@@ -201,11 +221,11 @@ public class CompilationEngine {
         this.jackTokenizer.advance();
 
         // method内部
-
+        this.compileMethodBody();
 
         // '}'
         if (!(this.jackTokenizer.tokenType() == TokenType.SYMBOL &&
-            this.jackTokenizer.symbol() == Symbol.RBRACE.getCode())) {
+            this.jackTokenizer.symbol().equals(Symbol.RBRACE.getCode()))) {
           throw new RuntimeException("expect '}' after '{'");
         }
         System.out.println("<symbol>");
@@ -218,16 +238,52 @@ public class CompilationEngine {
     }
 
     /** メソッド内部 */
-    private void methodBody() {
+    private void compileMethodBody() {
       while (true) {
         // classの終了 '}' まで
-        if (!(this.jackTokenizer.tokenType() == TokenType.SYMBOL &&
-            this.jackTokenizer.symbol() == Symbol.RBRACE.getCode())) {
+        if ((this.jackTokenizer.tokenType() == TokenType.SYMBOL &&
+            this.jackTokenizer.symbol().equals(Symbol.RBRACE.getCode()))) {
           return;
         }
 
-        
+        // if, while などなど判断
+        if (this.jackTokenizer.tokenType() == TokenType.IDENTIFIER) {
+          this.compileStatements();
 
+          System.out.println("<symbol>");
+          System.out.println(this.jackTokenizer.symbol());
+          System.out.println("</symbol>");
+        }
+      }
+    }
+
+    private void compileStatements() {
+      while (true) {
+        // statementsの終了 ';' まで
+        if ((this.jackTokenizer.tokenType() == TokenType.SYMBOL &&
+            this.jackTokenizer.symbol().equals(Symbol.RBRACE.getCode()))) {
+          return;
+        }
+
+        if (this.jackTokenizer.tokenType() == TokenType.IDENTIFIER) {
+          System.out.println("<identifier>");
+          System.out.println(this.jackTokenizer.identifier());
+          System.out.println("</identifier>");
+        }
+
+        if (this.jackTokenizer.tokenType() == TokenType.STRING_CONSTANT) {
+          System.out.println("<string_constant>");
+          System.out.println(this.jackTokenizer.stringVal());
+          System.out.println("</string_constant>");
+        }
+
+        if (this.jackTokenizer.tokenType() == TokenType.SYMBOL) {
+          System.out.println("<symbol>");
+          System.out.println(this.jackTokenizer.symbol());
+          System.out.println("</symbol>");
+        }
+
+        this.jackTokenizer.advance();
       }
     }
 }
