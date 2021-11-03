@@ -10,12 +10,14 @@ public class CompilationEngine {
     private Path inputPath;
     private Path outPath;
     private JavaTokenizer jackTokenizer;
+    private ClassWriter classWriter;
 
-    public CompilationEngine(Path inputPath, Path outPath) {
+  public CompilationEngine(Path inputPath, Path outPath) {
         this.inputPath = inputPath;
         this.outPath = outPath;
 
         this.jackTokenizer = new JavaTokenizer(inputPath);
+        this.classWriter = new ClassWriter(outPath.toString());
     }
 
     public void compile() {
@@ -23,6 +25,7 @@ public class CompilationEngine {
         this.compileClass();
         this.jackTokenizer.advance();
       }
+      this.classWriter.close();
     }
 
     /** クラスコンパイル */
