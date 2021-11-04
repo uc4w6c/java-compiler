@@ -16,6 +16,7 @@ public class ClassWriter {
   public ClassWriter(String outputPath) {
     this.outputPath = outputPath;
 
+    // 以下の処理はここではなくて別メソッドの方が良いかも
     try {
       this.fileOutputStream = new FileOutputStream(this.outputPath);
     } catch (FileNotFoundException e) {
