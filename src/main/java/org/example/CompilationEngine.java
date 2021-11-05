@@ -25,7 +25,7 @@ public class CompilationEngine {
         this.compileClass();
         this.jackTokenizer.advance();
       }
-      this.classWriter.close();
+      this.classWriter.write();
     }
 
     /** クラスコンパイル */
