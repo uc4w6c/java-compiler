@@ -1511,3 +1511,18 @@ attribute_length: 2つ
 00 23
 sourcefile_index: 35つ目のコンスタントプールを参照
 Test.java
+
+---
+その他メモ
+
+### local_variable_table
+Start, Length
+変数の有効範囲
+
+Startが開始位置(変数が有効になる箇所定義した箇所)
+Lengthが有効期間
+Start + Lengthで変数の終了箇所となる。
+
+ここでのインデックスはCode定義のインデックスと一致している。
+
+
