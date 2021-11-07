@@ -1334,3 +1334,180 @@ access_flags
 ACC_PUBLIC(0x0001)
 ACC_STATIC(0x0008)
 ACC_VARARGS(0x0080)
+
+00 1c
+name_index: 28つ目のコンスタントプールを参照
+main
+
+00 1d
+descriptor_index: 29つ目のコンスタントプールを参照
+([Ljava/lang/String;)V
+
+00 01
+attributes_count: 1つ
+
+###### attributes
+00001f0行目
+
+00 17
+attribute_name_index: 23つ目のコンスタントプールを参照
+Code
+
+00 00 00 47
+attribute_length: 71つ
+
+00 02
+max_stack
+
+00 02
+max_locals
+
+00 00 00 0b
+code_length: 11
+
+###### code
+0000200行目
+
+1. 
+12 07
+ldc #7(String Hello World!)
+
+2.
+4c
+astore_1
+
+3.
+b2 00 09
+getstatic #9(Field java/lang/System.out:Ljava/io/PrintStream;)
+
+4.
+2b
+aload_1
+
+5.
+b6 00 0f
+invokevirtual #15(Method java/io/PrintStream.println:(Ljava/lang/String;)V)
+
+6.
+b1
+return
+
+Code終わり
+
+0000210行目
+
+00 00
+exception_table_length: 0つ
+
+###### attributes
+0000210行目
+
+00 02
+attributes_count: ２つ
+
+####### attribute1つ目
+00 18
+attribute_name_index: 24つ目のコンスタントプールを参照
+LineNumberTable
+
+00 00 00 0e
+attribute_length: 14つ
+
+00 03
+line_number_table_length: 3つ
+
+[
+{
+00 00
+start_pc: 0
+
+00 05
+line_number: 5
+},
+{
+00 03
+start_pc: 3
+
+00 06
+line_number: 6
+},
+{
+00 0a
+start_pc: 10
+
+00 07
+line_number: 7
+}
+]
+
+####### attribute2つ目 
+00 19
+attribute_name_index: 25つ目のコンスタントプールを参照
+LocalVariableTable
+
+00 00 00 16
+attribute_length: 22つ
+
+00 03
+line_number_table_length: 3つ
+
+00 02
+local_variable_table_length: 2つ
+
+[
+{
+00 00
+start_pc
+
+00 0b
+length: 11つ
+
+00 1e
+name_index: 30つ目のコンスタントプールを参照
+args
+
+00 1f
+descriptor_index: 31つ目のコンスタントプールを参照
+[Ljava/lang/String;
+
+00 00
+index: 0
+},
+{
+00 03
+start_pc
+
+00 08
+length: 8つ
+
+00 20
+name_index: 32つ目のコンスタントプールを参照
+test
+
+00 21
+descriptor_index: 33つ目のコンスタントプールを参照
+Ljava/lang/String;
+
+00 01
+index: 1
+}
+]
+
+
+### ClassFile.attributes_count
+0000240行目
+
+00 01
+attributes_count
+1つ
+
+00 22
+attribute_name_index: 34つ目のコンスタントプールを参照
+SourceFile
+
+00 00 00 02
+attribute_length: 2つ
+
+00 23
+sourcefile_index: 35つ目のコンスタントプールを参照
+Test.java
